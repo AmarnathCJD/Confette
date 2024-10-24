@@ -23,7 +23,7 @@
                 .then(data => {
                     console.log(data);
                     let checkoutOptions = {
-                        paymentSessionId: data.paymentSessionId,
+                        paymentSessionId: data.payment_session_id,
                         redirectTarget: "_self",
                     };
                     cashfree.checkout(checkoutOptions);
