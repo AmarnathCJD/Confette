@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | GreenGather</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+
+<body class="bg-gray-100 font-roboto">
+    <script type="text/javascript">
+        if (localStorage.getItem('signedIn') !== 'true') {
+            window.location.href = '/signin.html';
+        }
+    </script>
+    <header class="bg-teal-800 text-white py-4 shadow-md">
+        <div class="container mx-auto px-4 md:px-8 lg:px-16 flex items-center justify-between">
+            <a href="#" class="text-2xl font-semibold tracking-wider">
+                GreenGather
+            </a>
+            <ul class="hidden md:flex space-x-2 items-center text-lg">
+                <li><a href="/" class="hover:text-teal-300 px-3 py-2 rounded-md transition">Home <i
+                            class="fas fa-home ml-2"></i></a></li>
+                <li>
+                    <a href="#" class="hover:text-teal-300 px-3 py-2 rounded-md transition flex items-center"
+                        id="profileInfoBtn">
+                        Profile <i class="fas fa-user ml-2 text-lg"></i>
+                    </a>
+                </li>
+            </ul>
+            <div class="md:hidden">
+                <button id="mobileMenuToggle" class="focus:outline-none hover:text-teal-300">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobileMenu" class="md:hidden bg-teal-700 absolute w-full mt-2 rounded-md shadow-md hidden z-10">
+            <ul class="p-6 space-y-4">
+                <li><a href="/" class="block hover:bg-teal-600 px-5 py-3 rounded-md transition">Home</a></li>
+                <li>
+                    <a href="#" class="block hover:bg-teal-600 px-5 py-3 rounded-md transition flex items-center"
+                        id="profileInfoBtnMobile">
+                        Profile <i class="fas fa-user ml-2 text-lg"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <section class="container mx-auto py-12 px-6 lg:px-16">
+        <h1 class="text-3xl font-bold text-teal-900 mb-8">Dashboard</h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            <div class="bg-white p-8 rounded-lg shadow-lg">
+                <h2 class="text-xl font-bold text-teal-800 mb-4">Schedule Pickup</h2>
+                <button id="schedulePickupBtn"
+                    class="bg-teal-600 hover:bg-teal-700 text-white py-2 px-6 rounded w-full">
+                    Schedule New Pickup
+                </button>
+                <img src="https://www.wm.com/content/dam/wm/assets/recycle-right/customer-residential-recycling-toter-mm.jpg"
+                    alt="Schedule Pickup" class="mt-4 rounded-lg w-96 h-48 object-cover">
+            </div>
+
+            <div class="bg-white p-8 rounded-lg shadow-lg">
+                <h3 class="text-2xl font-bold text-green-800 mb-4">Payment Summary</h3>
+                <div class="flex items-center justify-between border-b pb-4 mb-4">
+                    <span class="text-xl font-semibold text-gray-700">Pending Amount:</span>
+                    <span class="text-2xl font-bold text-green-600">₹200</span>
+                </div>
+                <button onclick="createCheckoutPage()" 
+                class="bg-teal-600 hover:bg-teal-700 text-white py-2 px-6 rounded w-full">
+                    Pay Now
+                </button>
+                <div class="flex items-center justify-start space-x-6 mt-6">
+                    <div class="flex items-center">
+                        <i class="fas fa-credit-card text-3xl text-green-600"></i>
+                        <span class="ml-2 text-gray-600">Credit Card</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-mobile-alt text-3xl text-green-600"></i>
+                        <span class="ml-2 text-gray-600">Mobile Payment</span>
+                    </div>
+                </div>
+                <div class="mt-2 flex items-center justify-center">
+                    <span class="text-gray-600 text-lg font-semibold">Powered by</span>
+                    <img src="https://cashfreelogo.cashfree.com/cf-og.png" alt="Cashfree"
+                        class="w-24 ml-4 transition-transform duration-300 hover:scale-110 rounded-lg">
+                </div>
+
+            </div>
+            <div class="bg-white p-8 rounded-lg shadow-lg">
+                <h2 class="text-xl font-bold text-teal-800 mb-4">Upcoming Pickups</h2>
+                <ul class="space-y-4">
+                    <li class="border-b py-2">Date: 25th Oct 2024 - 10:00 AM</li>
+                    <li class="border-b py-2">Date: 28th Oct 2024 - 02:00 PM</li>
+                    <li class="border-b py-2">Date: 30th Oct 2024 - 09:30 AM</li>
+                </ul>
+                <button id="viewAllPickupsBtn"
+                    class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-3 mt-6 rounded w-full">
+                    View All
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+            <div class="bg-white p-8 rounded-lg shadow-lg">
+                <h2 class="text-xl font-bold text-teal-800 mb-4">Report an Issue</h2>
+                <form class="mt-4 space-y-4">
+                    <textarea
+                        class="w-full h-48 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition duration-150 ease-in-out"
+                        placeholder="Describe your issue..." required></textarea>
+                    <button
+                        class="bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-lg shadow-md transition duration-200 ease-in-out transform hover:scale-105 w-full">Submit</button>
+                </form>
+            </div>
+            <div class="bg-white p-8 rounded-lg shadow-lg">
+                <h2 class="text-xl font-bold text-teal-800 mb-4">Track Collection</h2>
+                <div class="mt-6 h-64 rounded-md overflow-hidden shadow-md">
+                    <div id="map" class="z-0 w-full h-full"></div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <div id="schedulePickupModal"
+        class="fixed z-50 inset-0 bg-gray-900 bg-opacity-50 hidden items-center justify-center transition-opacity duration-300 z-10">
+        <div class="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full opacity-0 animate-fade-in">
+            <h2 class="text-2xl font-bold text-teal-800 mb-4">Schedule New Pickup</h2>
+            <form class="space-y-6">
+                <div>
+                    <label for="pickupDate" class="block text-gray-700 font-semibold mb-2">Select
+                        Date:</label>
+                    <input type="date" id="pickupDate"
+                        class="w-full border rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500">
+                </div>
+                <div>
+                    <label for="pickupTime" class="block text-gray-700 font-semibold mb-2">Select
+                        Time:</label>
+                    <input type="time" id="pickupTime"
+                        class="w-full border rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500">
+                </div>
+                <div>
+                    <label for="pickupAmount" class="block text-gray-700 font-semibold mb-2">Waste
+                        Amount (kg):</label>
+                    <input type="number" id="pickupAmount"
+                        class="w-full border rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                        min="1">
+                </div>
+                <div>
+                    <button type="submit" class="bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded w-full">
+                        Schedule Pickup
+                    </button>
+                </div>
+            </form>
+            <button id="closeSchedulePickupModal"
+                class="bg-gray-400 hover:bg-gray-500 text-white px-6 py-3 mt-4 rounded w-full">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <div id="profileModal"
+        class="fixed z-50 inset-0 bg-gray-900 bg-opacity-50 hidden items-center justify-center transition-opacity duration-300">
+        <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full opacity-0 animate-fade-in">
+            <h2 class="text-2xl font-bold text-teal-800 mb-4 border-b pb-2">Profile Overview</h2>
+            <div class="flex items-center mb-6">
+                <img src="https://img.icons8.com/dusk/64/user-female-circle.png" alt="Profile Picture"
+                    class="rounded-full mr-4 shadow-md">
+                <div>
+                    <p class="text-lg font-semibold">Elina Gilbert</p>
+                    <p class="text-gray-600">Eco Warrior</p>
+                </div>
+            </div>
+            <p class="text-lg"><strong>Email:</strong> <span class="text-gray-800">elinagb13@gmail.com</span></p>
+            <p class="text-lg"><strong>Contact Number:</strong> <span class="text-gray-800">+1 (234) 567-8901</span></p>
+            <p class="text-lg"><strong>Address:</strong> <span class="text-gray-800">21, Elm Street, Springfield</span>
+            </p>
+
+            <p class="text-lg mt-4"><strong>Waste Collected:</strong> <span class="text-gray-800">50 Kg</span></p>
+            <div class="w-full bg-gray-200 rounded-full h-3 mt-3 mb-6">
+                <div class="bg-teal-600 h-3 rounded-full" style="width: 70%"></div>
+            </div>
+            <p class="text-lg"><strong>Reward Points:</strong> <span class="text-gray-800">150</span></p>
+            <button id="claimRewardsBtn"
+                class="flex items-center bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 mt-6 rounded-lg transition duration-300">
+                <i class="fas fa-gift mr-2"></i> Claim Rewards
+            </button>
+            <button id="signOutBtn" onclick="localStorage.setItem('signedIn', 'false'); window.location.href='/'"
+                class="flex items-center bg-red-600 hover:bg-red-700 text-white px-6 py-3 mt-4 rounded-lg transition duration-300">
+                <i class="fas fa-sign-out-alt mr-2"></i> Sign Out
+            </button>
+            <button id="closeProfileModal"
+                class="bg-gray-400 hover:bg-gray-500 text-white px-6 py-3 mt-4 rounded-lg transition duration-300">
+                Close
+            </button>
+        </div>
+    </div>
+    <footer class="bg-teal-700 text-white py-8 px-6 mt-16 shadow-md text-sm py-4">
+        <div class="container mx-auto flex justify-between font-bold">
+            <p>© 2024 GreenGather. All rights reserved.</p>
+            <div class="space-x-6">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        document.getElementById('claimRewardsBtn').addEventListener('click', function () {
+            const duration = 2 * 1000;
+            const end = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 7,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    props: ['circle'],
+                });
+                confetti({
+                    particleCount: 7,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                });
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            })();
+        });
+        const map = L.map('map').setView([10.8505, 76.2711], 12);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        const marker = L.marker([10.8505, 76.2711]).addTo(map);
+        marker.bindPopup('Collection Truck Location').openPopup();
+
+        const schedulePickupBtn = document.getElementById('schedulePickupBtn');
+        const schedulePickupModal = document.getElementById('schedulePickupModal');
+        const closeSchedulePickupModal = document.getElementById('closeSchedulePickupModal');
+
+        schedulePickupBtn.addEventListener('click', () => {
+            schedulePickupModal.classList.remove('hidden');
+            schedulePickupModal.classList.add('flex');
+            setTimeout(() => {
+                schedulePickupModal.querySelector('.opacity-0').classList.remove('opacity-0');
+            }, 10);
+        });
+
+        closeSchedulePickupModal.addEventListener('click', () => {
+            schedulePickupModal.classList.add('hidden');
+            schedulePickupModal.querySelector('.opacity-0').classList.add('opacity-0');
+        });
+
+
+        const profileInfoBtn = document.getElementById('profileInfoBtn');
+        const profileInfoBtnMobile = document.getElementById('profileInfoBtnMobile');
+        const profileModal = document.getElementById('profileModal');
+        const closeProfileModal = document.getElementById('closeProfileModal');
+
+        profileInfoBtn.addEventListener('click', () => {
+            profileModal.classList.remove('hidden');
+            profileModal.classList.add('flex');
+            setTimeout(() => {
+                profileModal.querySelector('.opacity-0').classList.remove('opacity-0');
+            }, 10);
+        });
+
+        profileInfoBtnMobile.addEventListener('click', () => {
+            profileModal.classList.remove('hidden');
+            profileModal.classList.add('flex');
+            setTimeout(() => {
+                profileModal.querySelector('.opacity-0').classList.remove('opacity-0');
+            }, 10);
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        closeProfileModal.addEventListener('click', () => {
+            profileModal.classList.add('hidden');
+            profileModal.querySelector('.opacity-0').classList.add('opacity-0');
+        });
+
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        mobileMenuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        function createCheckoutPage() {
+            const url = "https://sandbox.cashfree.com/pg/orders";
+            const headers = {
+                "x-client-id": "TEST430329ae80e0f32e41a393d78b923034",
+                "x-client-secret": "TESTaf195616268bd6202eeb3bf8dc458956e7192a85",
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "x-api-version": "2023-08-01"
+            };
+
+            const data = {
+                order_amount: 1.00,
+                order_currency: "INR",
+                order_id: "devstudio_2449374",
+                customer_details: {
+                    customer_id: "devstudio_user",
+                    customer_phone: "8474090589"
+                },
+                order_meta: {
+                    return_url: "https://www.cashfree.com/devstudio/preview/pg/web/checkout?order_id={order_id}"
+                }
+            };
+
+            fetch(url, {
+                method: "POST",
+                headers: headers,
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Success:", data);
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+        }
+    </script>
+</body>
+
+</html>
