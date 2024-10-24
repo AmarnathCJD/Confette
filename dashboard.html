@@ -299,40 +299,7 @@
         });
 
         function createCheckoutPage() {
-            const url = "https://sandbox.cashfree.com/pg/orders";
-            const headers = {
-                "x-client-id": "TEST430329ae80e0f32e41a393d78b923034",
-                "x-client-secret": "TESTaf195616268bd6202eeb3bf8dc458956e7192a85",
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-                "x-api-version": "2023-08-01"
-            };
-
-            const data = {
-                order_amount: 1.00,
-                order_currency: "INR",
-                order_id: "devstudio_2449374",
-                customer_details: {
-                    customer_id: "devstudio_user",
-                    customer_phone: "8474090589"
-                },
-                order_meta: {
-                    return_url: "https://www.cashfree.com/devstudio/preview/pg/web/checkout?order_id={order_id}"
-                }
-            };
-
-            fetch(url, {
-                method: "POST",
-                headers: headers,
-                body: JSON.stringify(data)
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Success:", data);
-                })
-                .catch((error) => {
-                    console.error("Error:", error);
-                });
+           window.location.href = '/checkout.html';
         }
     </script>
 </body>
