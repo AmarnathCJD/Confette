@@ -17,18 +17,18 @@
         const cashfree = Cashfree({
             mode: "sandbox",
         });
-        document.getElementById("renderBtn").addEventListener("click", () => {
-            fetch('/api/check')
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                    let checkoutOptions = {
-                        paymentSessionId: data.payment_session_id,
-                        redirectTarget: "_self",
-                    };
-                    cashfree.checkout(checkoutOptions);
-                });
-        });
+
+        fetch('/api/check')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                let checkoutOptions = {
+                    paymentSessionId: data.payment_session_id,
+                    redirectTarget: "_self",
+                };
+                cashfree.checkout(checkoutOptions);
+            });
+
     </script>
 </body>
 
