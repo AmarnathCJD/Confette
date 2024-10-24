@@ -44,14 +44,12 @@ func CashHandler(w http.ResponseWriter, r *http.Request) {
 		},
 	}
 
-	// Convert order details to JSON
 	orderJSON, err := json.Marshal(order)
 	if err != nil {
 		http.Error(w, "Failed to marshal order details", http.StatusInternalServerError)
 		return
 	}
 
-	// Prepare the request
 	url := "https://sandbox.cashfree.com/pg/orders"
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(orderJSON))
 	if err != nil {
@@ -59,14 +57,12 @@ func CashHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Set headers
 	req.Header.Set("x-client-id", "TEST430329ae80e0f32e41a393d78b923034")
 	req.Header.Set("x-client-secret", "TESTaf195616268bd6202eeb3bf8dc458956e7192a85")
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("x-api-version", "2023-08-01")
 
-	// Send the request
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
@@ -75,7 +71,6 @@ func CashHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer resp.Body.Close()
 
-	// Read response
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(resp.StatusCode)
 	_, err = io.Copy(w, resp.Body)
