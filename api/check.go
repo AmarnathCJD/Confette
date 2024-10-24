@@ -4,7 +4,9 @@ import (
 	"bytes"
 	"encoding/json"
 	"io"
+	"math/rand"
 	"net/http"
+	"strconv"
 )
 
 // OrderDetails represents the structure of the order
@@ -27,12 +29,16 @@ type Meta struct {
 	ReturnURL string `json:"return_url"`
 }
 
+func GenrandOrderId() string {
+	return "devstudio_" + strconv.Itoa(rand.Intn(10000000))
+}
+
 func CashHandler(w http.ResponseWriter, r *http.Request) {
 	// Prepare the order details
 	order := OrderDetails{
 		OrderAmount:   1.00,
 		OrderCurrency: "INR",
-		OrderID:       "devstudio_2449374",
+		OrderID:       GenrandOrderId(),
 		CustomerDetails: Customer{
 			CustomerID:    "devstudio_user",
 			CustomerPhone: "8474090589",
