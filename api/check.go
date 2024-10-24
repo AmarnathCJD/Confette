@@ -9,7 +9,6 @@ import (
 	"strconv"
 )
 
-// OrderDetails represents the structure of the order
 type OrderDetails struct {
 	OrderAmount     float64  `json:"order_amount"`
 	OrderCurrency   string   `json:"order_currency"`
@@ -18,13 +17,11 @@ type OrderDetails struct {
 	OrderMeta       Meta     `json:"order_meta"`
 }
 
-// Customer represents the customer details
 type Customer struct {
 	CustomerID    string `json:"customer_id"`
 	CustomerPhone string `json:"customer_phone"`
 }
 
-// Meta represents the order meta information
 type Meta struct {
 	ReturnURL string `json:"return_url"`
 }
@@ -34,9 +31,8 @@ func GenrandOrderId() string {
 }
 
 func CashHandler(w http.ResponseWriter, r *http.Request) {
-	// Prepare the order details
 	order := OrderDetails{
-		OrderAmount:   1.00,
+		OrderAmount:   200.00,
 		OrderCurrency: "INR",
 		OrderID:       GenrandOrderId(),
 		CustomerDetails: Customer{
