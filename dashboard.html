@@ -73,8 +73,8 @@
                     <span class="text-xl font-semibold text-gray-700">Pending Amount:</span>
                     <span class="text-2xl font-bold text-green-600">₹200</span>
                 </div>
-                <button onclick="createCheckoutPage()" 
-                class="bg-teal-600 hover:bg-teal-700 text-white py-2 px-6 rounded w-full">
+                <button onclick="createCheckoutPage()"
+                    class="bg-teal-600 hover:bg-teal-700 text-white py-2 px-6 rounded w-full">
                     Pay Now
                 </button>
                 <div class="flex items-center justify-start space-x-6 mt-6">
@@ -105,6 +105,44 @@
                     class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-3 mt-6 rounded w-full">
                     View All
                 </button>
+                <div id="viewAllPickupsModal"
+                    class="fixed z-50 inset-0 bg-gray-900 bg-opacity-50 hidden items-center justify-center transition-opacity duration-300 z-10">
+                    <div class="bg-white p-8 rounded-lg shadow-lg max-w-lg w-full opacity-0 animate-fade-in">
+                        <h2 class="text-2xl font-bold text-teal-800 mb-4">Upcoming Pickups</h2>
+                        <ul class="space-y-4">
+                            <li class="border-b py-2">Date: 25th Oct 2024 - 10:00 AM</li>
+                            <li class="border-b py-2">Date: 28th Oct 2024 - 02:00 PM</li>
+                            <li class="border-b py-2">Date: 30th Oct 2024 - 09:30 AM</li>
+                            <li class="border-b py-2">Date: 2nd Nov 2024 - 11:00 AM</li>
+                            <li class="border-b py-2">Date: 5th Nov 2024 - 03:30 PM</li>
+                            <li class="border-b py-2">Date: 8th Nov 2024 - 10:00 AM</li>
+                            <li class="border-b py-2">Date: 10th Nov 2024 - 02:00 PM</li>
+                        </ul>
+                        <button id="closeViewAllPickupsModal"
+                            class="bg-gray-400 hover:bg-gray-500 text-white px-6 py-3 mt-4 rounded w-full">
+                            Close
+                        </button>
+                    </div>
+                </div>
+
+                <script>
+                    const viewAllPickupsBtn = document.getElementById('viewAllPickupsBtn');
+                    const viewAllPickupsModal = document.getElementById('viewAllPickupsModal');
+                    const closeViewAllPickupsModal = document.getElementById('closeViewAllPickupsModal');
+
+                    viewAllPickupsBtn.addEventListener('click', () => {
+                        viewAllPickupsModal.classList.remove('hidden');
+                        viewAllPickupsModal.classList.add('flex');
+                        setTimeout(() => {
+                            viewAllPickupsModal.querySelector('.opacity-0').classList.remove('opacity-0');
+                        }, 10);
+                    });
+
+                    closeViewAllPickupsModal.addEventListener('click', () => {
+                        viewAllPickupsModal.classList.add('hidden');
+                        viewAllPickupsModal.querySelector('.opacity-0').classList.add('opacity-0');
+                    });
+                </script>
             </div>
         </div>
 
@@ -299,7 +337,7 @@
         });
 
         function createCheckoutPage() {
-           window.location.href = '/checkout.html';
+            window.location.href = '/checkout.html';
         }
     </script>
 </body>
