@@ -40,7 +40,7 @@ func CashHandler(w http.ResponseWriter, r *http.Request) {
 			CustomerPhone: "8474090589",
 		},
 		OrderMeta: Meta{
-			ReturnURL: "https://www.cashfree.com/devstudio/preview/pg/web/checkout?order_id={order_id}",
+			ReturnURL: "https://confette.vercel.app/",
 		},
 	}
 
